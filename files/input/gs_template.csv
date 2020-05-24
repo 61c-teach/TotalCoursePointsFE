@@ -1,0 +1,3 @@
+First Name,Last Name,SID,Email,section_name,Total Score,Status,Submission ID,Submission Time,Lateness (H:M:S),View Count,1: Autograder (1.0 pts)
+Student,Evil,123456789,evilstudent@berkeley.edu,compsci-61c-dis-999,1.0,Graded,27431781,2020-01-22 11:11:01 -0800,00:00:00,0,1.0
+Student,Evile,9876543210,evilstudent2@berkeley.edu,compsci-61c-dis-999,,Missing

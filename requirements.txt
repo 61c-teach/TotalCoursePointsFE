@@ -1,0 +1,8 @@
+subprocess32
+numpy
+gspread
+oauth2client
+pytz
+pandas
+py_mini_racer
+bs4

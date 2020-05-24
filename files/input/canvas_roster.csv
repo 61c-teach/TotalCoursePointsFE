@@ -1,0 +1,3 @@
+"Name","Student ID","User ID","Role","Email Address","LEC","DIS","LAB","Majors","Terms in Attendance","Units","Grading Basis","Waitlist Position"
+"Student, Evil","123456789","1233210","Student","evilstudent@berkeley.edu","001","999","999L","Letters & Sci Undeclared UG","5","4.0","Default P/NP",""
+"Student, Evile","9876543210","1233211","Student","evilstudent2@berkeley.edu","001","999","999L","Bioengineering BS, Electrical Eng & Comp Sci BS","7","4.0","Default P/NP",""

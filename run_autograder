@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo Running the autograder...
+python3.7 -u main.py
