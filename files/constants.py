@@ -18,6 +18,8 @@ RESOLVED_CHEATERS_FILE = "files/input/resolved_cheaters.csv"
 
 # These are links to Google Sheets if you choose to use them. You should change the ID to a sheet you would use.
 GSHEET_CREDENTIALS_JSON_FILE = "files/input/credentials.json"
+
+# You can check out these google sheets if you want an example
 GSHEET_ASSIGNMENTS_ID = "1lurL8QzgXRnDXoAti3hQy3CS7RPwl43wH6IYcg9BycY"
 GSHEET_EXTENSIONS_ID = "1ccputUkPoLfP24efpZlhqKKWDr2YJBSCcH4Q5wm_GZs"
 
