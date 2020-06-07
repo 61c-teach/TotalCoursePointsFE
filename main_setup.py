@@ -12,7 +12,7 @@ import re
 from grading.utils.fix_cheating_incompletes import fix_cheating_and_incompletes
 from files.constants import *
 
-GSheetBase.default_credentials = GSHEET_CREDENTIALS_JSON_FILE
+GSheetBase.default_credentials_list = GSHEET_CREDENTIALS_JSON_FILES_LIST
 
 print("=" * 5 + "Building the class data" + "=" * 5)
 

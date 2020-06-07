@@ -17,12 +17,11 @@ gs_assignment_id = 678910
 
 def main():
     client = GradescopeAPIClient()
-    # client.prompt_login()
+    client.prompt_login()
     print("Generating the roster...")
     roster = generate_roster()
     print("Generating the roster...Done!")
     input("Press Enter to continue...")
-    return
     print("Uploading the students...")
     upload_sids_to_gs(roster, client, gs_class_id, gs_assignment_id)
     print("Uploading the students...Done!")
