@@ -1,3 +1,6 @@
 [submodule "TotalCoursePoints"]
 	path = TotalCoursePoints
 	url = git@github.com:61c-teach/TotalCoursePoints.git
+[submodule "GradescopeBase"]
+	path = GradescopeBase
+	url = git@github.com:61c-teach/GradescopeBase.git
