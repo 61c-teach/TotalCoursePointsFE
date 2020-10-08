@@ -3,8 +3,10 @@ This file will contain the stuff necessary for creating the roster and uploading
 """
 
 from gs_api_client import GradescopeAPIClient
+import getpass
 import os
 import csv
+from tqdm import tqdm
 
 gs_roster_loc = "files/input/gs_roster.csv"
 canvas_roster_loc = "files/input/canvas_roster.csv"
@@ -19,14 +21,33 @@ def main():
     import sys
     argv = sys.argv
     upload_to_gs = True
-    if len(argv) > 1 and argv[1] == "regen":
-        upload_to_gs = False
+    only_sync = False
+    if len(argv) > 1:
+        if argv[1] == "regen":
+            print("Only regenerating the roster.")
+            upload_to_gs = False
+        elif argv[1] == "sync":
+            print("Only syncing students without submissions.")
+            only_sync = True
+    
     print("Generating the roster...")
     roster = generate_roster()
     print("Generating the roster...Done!")
     if upload_to_gs:
+        # Login to Gradescopes real api.
         client = GradescopeAPIClient()
-        client.prompt_login()
+        email = None
+        password = None
+        while not client.token:
+            email = input("Please provide the email address on your Gradescope account: ")
+            password = getpass.getpass('Password: ')
+            if not client.log_in(email, password):
+                print("An error occured when attempting to log you in, try again...")
+        # Filter roster to only upload new students without submissions
+        if only_sync:
+            print("Mutating roster to only sync students without submissions...")
+            roster = only_sync_new_students((email, password), roster, gs_class_id, gs_assignment_id)
+            print("Mutating roster to only sync students without submissions...Done!")
         print("Uploading the students...")
         upload_sids_to_gs(roster, client, gs_class_id, gs_assignment_id)
         print("Uploading the students...Done!")
@@ -154,19 +175,38 @@ def generate_roster(gs_roster=gs_roster_loc, canvas_roster=canvas_roster_loc, de
     print("Writing roster...Done!")
     return gs_roster_data
 
+def only_sync_new_students(login_tuple, roster, course_id, assignment_id):
+    from fullGSapi.api import GradescopeClient
+
+    gc = GradescopeClient(logout_on_del=False, logout_on_with=False)
+    assert gc.log_in(*login_tuple), "Failed to login to gradescope!"
+    raw_scores_csv = gc.download_scores(course_id, assignment_id)
+
+    import csv
+    from io import StringIO
+
+    new_roster = {}
+
+    for row in csv.DictReader(StringIO(raw_scores_csv.decode())):
+        if row["Status"] == "Missing":
+            sid = row["SID"]
+            if sid and sid in roster:
+                new_roster[sid] = roster[sid]
+            else:
+                print(f"{row} is missing and does not have an SID in the roster!")
+                
+
+    return new_roster
+
+
 def upload_sids_to_gs(roster, client, course_id, assignment_id):
-    total = len(roster)
-    i = 1
-    for sid, data in roster.items():
-        print(f"Uploading {i} of {total}...", end="\r")
+    for sid, data in tqdm(roster.items(), dynamic_ncols=True, unit="Student", desc="Uploading Students"):
         email = data["email"]
         # Files is a dictionary mapping a filename to the contents of that file. You can add as many files as you want.
         files = {
             "input.json": f"{{\"sid\":\"{sid}\"}}"
         }
         client.upload_programming_submission(course_id, assignment_id, email, files_dict=files)
-        i += 1
-    print()
     print("Finished uploading students!")
 
 if __name__ == "__main__":

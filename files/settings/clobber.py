@@ -23,8 +23,7 @@ def clobber(c: Classroom):
     print(final_mt_stats_str) 
 
     potrs = lambda main_subscore, main_mean, main_stddev, orig_mean, orig_stddev: (main_subscore - main_mean) / main_stddev * orig_stddev + orig_mean
-    import IPython
-    IPython.embed()
+
     clobber_count = 0
     print("Applying clobber to each student...")
     for student in c.students:

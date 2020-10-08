@@ -6,3 +6,6 @@ pytz
 pandas
 py_mini_racer
 bs4
+cryptography
+cffi
+tqdm
