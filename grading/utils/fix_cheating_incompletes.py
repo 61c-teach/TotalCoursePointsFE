@@ -8,6 +8,7 @@ other_incompletes_file = OTHER_INCOMPLETES_FILE
 resolved_cheaters_file = RESOLVED_CHEATERS_FILE
 
 def fix_cheating_and_incompletes(c: Classroom):
+    print("Fixing cheating and incompletes...")
     if os.path.exists(dishonesty_incompletes_file):
         incompletes = list(pd.read_csv(dishonesty_incompletes_file)["SID"])
         for sid in incompletes:
@@ -30,23 +31,28 @@ def fix_cheating_and_incompletes(c: Classroom):
         For example, if someone cheated on project 1 (Projects/proj1) and the midterm (Exams/midterm), you would input:
         'Projects/proj1;Exams/midterm'
         """
-        resolved_cheaters = list(zip(dfrc["SID"], dfrc["assignments"]))
-        class dummy:
-            def give_zero(self, *args, **kwargs):
-                return 0
+        resolved_cheaters = list(zip(dfrc["Name"], dfrc["Email"], dfrc["SID"], dfrc["assignments"]))
         from TotalCoursePoints.utils import Time
-        for cheater, assignments in resolved_cheaters:
+        for name, email, cheater, assignments in resolved_cheaters:
+            cheater_str = f"{name} ({email}) [{cheater}]"
             s = c.get_student(cheater)
-            s.categoryData["EPA"].get_total_score = dummy().give_zero
-            # We do not have exam clobbering this sem.
-            # exams = s.categoryData["Exams"]
-            # q = exams.assignments_data[0]
-            # m = exams.assignments_data[1]
-            # q.score = q.orig_score
-            # m.score = m.orig_score
+            if s is None:
+                print(f"{cheater_str} is not in the class's roster!")
+                continue
+            epa = s.categoryData.get("EPA")
+            if epa:
+                epa.override_score = 0
+            else:
+                print(f"Could not remove epa as it was not found for {cheater_str}")
+            if isinstance(assignments, float):
+                raise ValueError(f"Detected a float for {cheater_str}. The CSV must be malformed!")
+                # import ipdb; ipdb.set_trace()
             split_assignments = assignments.split(";")
             for atxt in split_assignments:
                 cat, assign = atxt.split("/")
+                if cat not in s.categoryData:
+                    print(f"Unknown category: {cat} for {cheater_str}")
+                    continue
                 ct = s.categoryData[cat]
                 for a in ct.assignments_data:
                     if a.assignment.id == assign:
@@ -55,4 +61,4 @@ def fix_cheating_and_incompletes(c: Classroom):
                         a.time = Time()
                         break
                 else:
-                    print(f"Unknown assignment: '{atxt}' ({assignments}) for {cheater}")
+                    print(f"Unknown assignment: '{atxt}' ({assignments}) for {cheater_str}")

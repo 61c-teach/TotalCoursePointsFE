@@ -39,13 +39,21 @@ c.load_students_from_roster(ROSTER_FILE)
 c.process(with_gsheet_extensions=GSHEET_EXTENSIONS_ID)
 # c.process()
 
-# We do not have a clobber this semester!
 from files.settings.clobber import clobber
 clobber(c)
 
 fix_cheating_and_incompletes(c)
 
-c.print_class_statistics()
+import sys
+if len(sys.argv) > 1 and sys.argv[1] == "stats":
+    # c.print_class_statistics()
+    stats = c.get_class_statistics_str()
+    print(stats.encode("utf-8", "replace").decode())
+    stats2 = c.get_class_points_stats_str()
+    print(stats2.encode("utf-8", "replace").decode())
+
+from files.settings.custom_grading import custom_grading
+custom_grading(c)
 
 c.set_time_now()
 print("=" * 5 + f"Class data finished building at {c.get_localized_time()}" + "=" * 5)

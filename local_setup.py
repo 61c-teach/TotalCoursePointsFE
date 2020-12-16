@@ -9,13 +9,14 @@ import csv
 from tqdm import tqdm
 
 gs_roster_loc = "files/input/gs_roster.csv"
-canvas_roster_loc = "files/input/canvas_roster.csv"
+canvas_roster_loc = "files/input/canvas_roster.csv" # Currently does not work though will be smart enough later.
+calcentral_roster_loc = "files/input/calcentral_roster.csv"
 grade_status_roster = "files/input/calcentral_grade_roster.csv"
 dest_roster_loc = "files/roster.csv"
 
 # FIXME Change this to your class and assignment id!
-gs_class_id = 12345
-gs_assignment_id = 678910
+gs_class_id = 150586
+gs_assignment_id = 608022
 
 def main():
     import sys
@@ -54,7 +55,7 @@ def main():
     
     
 
-def generate_roster(gs_roster=gs_roster_loc, canvas_roster=canvas_roster_loc, dest=dest_roster_loc):
+def generate_roster(gs_roster=gs_roster_loc, canvas_roster=calcentral_roster_loc, dest=dest_roster_loc):
     print("Loading the Canvas roster...")
     dup_c_sids = set()
     canvas_roster_data = {}
@@ -86,6 +87,8 @@ def generate_roster(gs_roster=gs_roster_loc, canvas_roster=canvas_roster_loc, de
                         g = "ESU"
                     elif grade == "DPN":
                         g = "DPN"
+                    elif grade == "CPN":
+                        g = "CPN"
                     data["ForGrade"] = g
                 if sid in canvas_roster_data:
                     print(f"A student with sid {sid} already exists! (Attempted to add student {data} but failed!)")
@@ -157,7 +160,7 @@ def generate_roster(gs_roster=gs_roster_loc, canvas_roster=canvas_roster_loc, de
                     else:
                         print(f"The student {name} ({sid}) [{grade_status}] is not in the gradescope roster!")
                 else:
-                    if grade_status not in ["GRD", "EPN", "ESU", "DPN"]:
+                    if grade_status not in ["GRD", "EPN", "ESU", "DPN", "CPN"]:
                         print(f"The student {name} ({sid}) has an unsupported grade status [{grade_status}]")
                     gs_roster_data[sid]["ForGrade"] = grade_status
     else:

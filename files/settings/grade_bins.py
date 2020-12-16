@@ -19,6 +19,7 @@ grade_bins = GradeBins(bins =
         "EPN": Cm.min,
         "ESU": Bm.min,
         "DPN": Cm.min,
+        "CPN": Cm.min,
     },
     normal_max_points = 300,
 )

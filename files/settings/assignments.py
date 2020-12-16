@@ -7,9 +7,7 @@ def add_assignments(c: Classroom):
         comment="We will not be releasing details of how we distribute EPA! Also it does not show up in your total points calculation but it IS calculated into the estimated grade.",
         hidden=True)
     epa.add_assignments([
-        Assignment("Effort", epa, course_points=3),
-        Assignment("Participation", epa, course_points=3),
-        Assignment("Altruism", epa, course_points=3),
+        Assignment("EPA", epa, course_points=1),
     ])
     c.add_category(epa)
 

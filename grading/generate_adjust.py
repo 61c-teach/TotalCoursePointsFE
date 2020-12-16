@@ -7,7 +7,8 @@ def main():
     with open(CDATA_FILE, "rb") as f:
         c = pickle.load(f)
 
-    fix_cheating_and_incompletes(c)
+    # Done now in main_setup.py
+    # fix_cheating_and_incompletes(c)
 
     c.add_ignore_category("EPA")
     c.add_ignore_category("Extra Credit")
@@ -16,10 +17,11 @@ def main():
 
     print("===Current Class Standing:===")
     c.print_class_statistics(with_hidden=True)
+
     print("Exporting that roster:")
     c.dump_student_results(REPORT_RAW_NO_EPA_FILE, include_assignment_scores=True, with_hidden=True)
     print("Determining point adjustment:")
-    adjustment = c.est_gpa(3.3, start_pts=0, max_pts=100, max_a_plus=5)
+    adjustment = c.est_gpa(3.3, start_pts=28, max_pts=100, max_a_plus=4)
     if not adjustment:
         raise ValueError("Could not find a max number of points which would satisfy your requirements!")
     if isinstance(adjustment, (int, float)):
