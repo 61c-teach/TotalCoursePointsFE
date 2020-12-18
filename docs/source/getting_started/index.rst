@@ -41,6 +41,20 @@ Once you have done this, cd into the `GDA` directory (if you are not still in th
 
 This will generate a zip file in the `GDA` directory named `TotalCoursePointsFE-GDA.zip`. Please do not change the name or location as it is the script which `upload_and_rerun.py` uses (please look at the top of the file to confirm the directory and filename).
 
+`files/constants.py`
+^^^^^^^^^^^^^^^^^^^^
+
+This is the main file which will be referenced by a lot of other files to get the constant locations of items. The main thing you need to do is modify the `GSHEET_ASSIGNMENTS_ID` and the `GSHEET_EXTENSIONS_ID` to point to those spreadsheets if you plan on using them. If you do not plan on using them, please go to the `main_setup.py` file and remove those from it. Additionally, you will need to add the `COURES_ID` and `ASSIGNMENT_ID` of the Gradescope assignment to this.
+
+Google Sheets Setup
+^^^^^^^^^^^^^^^^^^^
+
+You can use google sheets to enter your grades for assignments instead of leaving them as CSV files in the `files/data` directory. If you do this, you will need to go to the Google Console and create a credential which can read from the Google Sheets API. Once you have done that, download the credentials as a json file. Finally, you should put that file in the `files/input/credentials.json` file.
+
+The next step is to create the sheet and share the sheet with the iAM account. The way TCP figures out what assignment is what is by the name of each sheet on the sheets. It does naming by the {category name}/{assignment ID}. If you have a sheet which does not have that naming scheme, it will ignore it. Also TCP requires you to have a few fields such as `Email`, `Name` (or `First Name` & `Last Name`), `SID`, `Total Points`, and `Status` (which is either `Graded` or `Missing`. It is optional to have the lateness category (`Lateness (H:M:S)`) though if you have it, it must be formatted as such: `{hours}:{minutes}:{seconds}`. 
+
+Another sheet which TCP works with is extensions. To set it up, it is the same as above though the sheet looks for different things. For this one, each sheet must be named after the category of assignments. Then you must have an `SID` column which is what TCP uses for searching for extensions. Finally, the other columns which TCP will look at are any which have matching names as the assignment IDs under that category. If it finds a match, it will read the SID and the number of extension time you gave them (default is in days though that is customizable in the assignment settings).
+
 
 `files/assignments.py`
 ^^^^^^^^^^^^^^^^^^^^^^
