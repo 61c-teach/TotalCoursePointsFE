@@ -1,5 +1,5 @@
 Total Course Points Front End
-===================
+=============================
 
 `TotalCoursePointsFE`_ is a Python codebase which utilizes the TotalCoursePoints API to generate a class's grades at UC Berkeley. It has a Gradescope frontend which allows students to have an updated view of how they are doing in the class.
 
@@ -29,16 +29,19 @@ After you have downloaded it, please modify the settings. Please see "Getting St
 Getting Started
 ---------------
 
-Clone the repo to a folder.
+.. toctree::
+   :maxdepth: 3
+
+   getting_started/index.rst
 
 
-API Documentation
+Default Files Documentation
 ---------------------------
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
-   api/index.rst
+   files/index.rst
 
 
 How to Contribute

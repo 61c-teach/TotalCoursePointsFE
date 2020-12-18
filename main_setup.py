@@ -26,8 +26,12 @@ Assignment.default_gsheet_base = GSheetBase(Assignment.default_gsheet_id)
 Assignment.use_gsheet_grades = True
 
 # Next lets create our classroom
+# FIXME: Set your classroom description and class ID.
 c = Classroom("Machine Structures", "CS61C", grade_bins)
-c.append_comment("[NOTICE]: The point values of assignments may change!\n\n")
+
+# I always add the line below just incase I modify assignments later in the class.
+# c.append_comment("[NOTICE]: The point values of assignments may change!\n\n")
+
 # Next lets grab our assignments
 from files.settings.assignments import add_assignments
 add_assignments(c)

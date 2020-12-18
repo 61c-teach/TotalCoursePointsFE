@@ -1,6 +1,8 @@
 files/data/c.data
 results/
 
+.vscode/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

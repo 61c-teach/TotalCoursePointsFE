@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ZIP_NAME=GDA.zip
+ZIP_NAME=TotalCoursePointsFE-GDA.zip
 
 if [[ ! -z "$1" ]]; then
     ZIP_NAME=$1

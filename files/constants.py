@@ -30,3 +30,6 @@ REPORT_NO_EPA_CURVED_FILE = "files/data/no_epa_curved_to_3.3.csv"
 REPORT_RAW_EPA_FILE = "files/data/raw_with_epa.csv"
 REPORT_EPA_CURVED_FILE = "files/data/epa_curved_like_raw_to_3.3.csv"
 REPORT_EPA_CURVED_BIN_ADJ_FILE = "files/data/epa_curved_like_raw_to_3.3_bin_adjust.csv"
+
+COURSE_ID = "123456"
+ASSIGNMENT_ID = "123456789"

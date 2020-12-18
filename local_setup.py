@@ -1,8 +1,7 @@
 """
 This file will contain the stuff necessary for creating the roster and uploading the submissions.
 """
-
-from gs_api_client import GradescopeAPIClient
+from fullGSapi.api.login_tokens import LoginTokens
 import getpass
 import os
 import csv
@@ -14,9 +13,8 @@ calcentral_roster_loc = "files/input/calcentral_roster.csv"
 grade_status_roster = "files/input/calcentral_grade_roster.csv"
 dest_roster_loc = "files/roster.csv"
 
-# FIXME Change this to your class and assignment id!
-gs_class_id = 150586
-gs_assignment_id = 608022
+# FIXME Go to the files/constants.py file to enter your course ID and assignment ID.
+from files.constants import COURSE_ID, ASSIGNMENT_ID
 
 def main():
     import sys
@@ -36,21 +34,17 @@ def main():
     print("Generating the roster...Done!")
     if upload_to_gs:
         # Login to Gradescopes real api.
-        client = GradescopeAPIClient()
-        email = None
-        password = None
-        while not client.token:
-            email = input("Please provide the email address on your Gradescope account: ")
-            password = getpass.getpass('Password: ')
-            if not client.log_in(email, password):
-                print("An error occured when attempting to log you in, try again...")
+        token: LoginTokens = LoginTokens().prompt_login(until_success=True)
+
+        input("Press enter to start uploading students...")
+
         # Filter roster to only upload new students without submissions
         if only_sync:
             print("Mutating roster to only sync students without submissions...")
-            roster = only_sync_new_students((email, password), roster, gs_class_id, gs_assignment_id)
+            roster = only_sync_new_students(token.gsFullapi, roster, COURSE_ID, ASSIGNMENT_ID)
             print("Mutating roster to only sync students without submissions...Done!")
         print("Uploading the students...")
-        upload_sids_to_gs(roster, client, gs_class_id, gs_assignment_id)
+        upload_sids_to_gs(roster, token.gsAPI, COURSE_ID, ASSIGNMENT_ID)
         print("Uploading the students...Done!")
     
     
@@ -178,11 +172,7 @@ def generate_roster(gs_roster=gs_roster_loc, canvas_roster=calcentral_roster_loc
     print("Writing roster...Done!")
     return gs_roster_data
 
-def only_sync_new_students(login_tuple, roster, course_id, assignment_id):
-    from fullGSapi.api import GradescopeClient
-
-    gc = GradescopeClient(logout_on_del=False, logout_on_with=False)
-    assert gc.log_in(*login_tuple), "Failed to login to gradescope!"
+def only_sync_new_students(gc, roster, course_id, assignment_id):
     raw_scores_csv = gc.download_scores(course_id, assignment_id)
 
     import csv
