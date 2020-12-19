@@ -1,12 +1,12 @@
+===========================
 Default Files Documentation
-=================
+===========================
 
 .. toctree::
    :maxdepth: 3
 
-   classroom.rst
-   category.rst
-   assignment.rst
-   student.rst
-   grade_bins.rst
-   utils.rst
+   local_setup.rst
+   main_setup.rst
+   main.rst
+   upload_and_rerun.rst
+   files/index.rst
