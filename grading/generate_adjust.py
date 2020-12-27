@@ -21,8 +21,8 @@ def main():
     print("Exporting that roster:")
     c.dump_student_results(REPORT_RAW_NO_EPA_FILE, include_assignment_scores=True, with_hidden=True)
     print("Determining point adjustment:")
-    adjustment = c.est_gpa(3.3, start_pts=28, max_pts=100, max_a_plus=4)
-    if not adjustment:
+    adjustment = c.est_gpa(3.3, start_pts=0, max_pts=100, max_a_plus=4)
+    if adjustment is False:
         raise ValueError("Could not find a max number of points which would satisfy your requirements!")
     if isinstance(adjustment, (int, float)):
         adjustment = (adjustment, 0)
