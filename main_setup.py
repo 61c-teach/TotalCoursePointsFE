@@ -53,15 +53,26 @@ if len(sys.argv) > 1 and sys.argv[1] == "stats":
     # c.print_class_statistics()
     stats = c.get_class_statistics_str()
     print(stats.encode("utf-8", "replace").decode())
-    stats2 = c.get_class_points_stats_str()
-    print(stats2.encode("utf-8", "replace").decode())
+print()
+stats2 = c.get_class_points_stats_str()
+print("Only for grade:\n" + stats2)
+print()
+stats2b = c.get_class_points_stats_str(only_for_grade=False)
+print("All Students:\n" + stats2b)
 
 from files.settings.custom_grading import custom_grading
 custom_grading(c)
+
+if c.all_inputted():
+    print("All non-hidden assignments have been entered!")
 
 c.set_time_now()
 print("=" * 5 + f"Class data finished building at {c.get_localized_time()}" + "=" * 5)
 import os
 os.system(f"mkdir -p {DATA_PATH}")
+
+if False: # Due to recursion limit issues
+    sys.setrecursionlimit(10000)
+
 pickle.dump(c, open(CDATA_FILE, "wb"))
 print("=" * 5 + "Finished data setup!" + "=" * 5)

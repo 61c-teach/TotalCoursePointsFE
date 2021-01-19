@@ -34,7 +34,10 @@ def main():
     print("Generating the roster...Done!")
     if upload_to_gs:
         # Login to Gradescopes real api.
-        token: LoginTokens = LoginTokens().prompt_login(until_success=True)
+        token: LoginTokens = LoginTokens.load()
+        if not token:
+            token = LoginTokens()
+        token = token.prompt_login(until_success=True)
 
         input("Press enter to start uploading students...")
 
